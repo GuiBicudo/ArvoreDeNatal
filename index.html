@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decorador de Árvore de Natal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilo personalizado para a fonte Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-700 to-green-900 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl p-8 max-w-4xl w-full text-center transform transition-all duration-300 hover:scale-105">
+        <h1 class="text-4xl font-bold text-green-800 mb-6">Monte sua Árvore de Natal!</h1>
+
+        <div id="tree-description-display" class="bg-green-100 text-green-800 text-2xl font-semibold p-6 rounded-md mb-8 border-2 border-green-300 min-h-[80px] flex items-center justify-center">
+            Clique em um botão para montar sua árvore!
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <button id="btn-base-tree" class="flex flex-col items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                <i class="fas fa-tree text-4xl mb-2"></i>
+                <span class="text-lg">Árvore Base</span>
+            </button>
+
+            <button id="btn-guirlanda" class="flex flex-col items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
+                <i class="fas fa-holly-berry text-4xl mb-2"></i>
+                <span class="text-lg">Árvore + Guirlanda</span>
+            </button>
+
+            <button id="btn-bolas" class="flex flex-col items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                <i class="fas fa-circle text-4xl mb-2"></i>
+                <span class="text-lg">Árvore + Bolas</span>
+            </button>
+
+            <button id="btn-doces" class="flex flex-col items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75">
+                <i class="fas fa-candy-cane text-4xl mb-2"></i>
+                <span class="text-lg">Árvore + Doces</span>
+            </button>
+
+            <button id="btn-guirlanda-bolas" class="flex flex-col items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75">
+                <i class="fas fa-holly-berry text-2xl"></i><i class="fas fa-circle text-2xl mb-2"></i>
+                <span class="text-lg">Árvore + Guirlanda + Bolas</span>
+            </button>
+
+            <button id="btn-all-decorated" class="flex flex-col items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-75">
+                <i class="fas fa-star text-4xl mb-2"></i>
+                <span class="text-lg">Árvore Completa</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Classes JavaScript que replicam a lógica Python do padrão Decorator
+
+        // Classe abstrata para a árvore
+        class AbstractTree {
+            description() {
+                throw new Error("Método 'description()' deve ser implementado.");
+            }
+        }
+
+        // Classe base concreta para a árvore
+        class Tree extends AbstractTree {
+            description() {
+                return "Árvore";
+            }
+        }
+
+        // Classe abstrata para os decoradores
+        class TreeDecorator extends AbstractTree {
+            constructor(tree) {
+                super();
+                this._tree = tree;
+            }
+
+            description() {
+                return this._tree.description();
+            }
+        }
+
+        // Decorador concreto para adicionar uma guirlanda
+        class Guirlanda extends TreeDecorator {
+            description() {
+                return `${this._tree.description()}, Guirlanda`;
+            }
+        }
+
+        // Decorador concreto para adicionar bolas
+        class Bolas extends TreeDecorator {
+            description() {
+                return `${this._tree.description()}, Bolas`;
+            }
+        }
+
+        // Decorador concreto para adicionar doces
+        class Doces extends TreeDecorator {
+            description() {
+                return `${this._tree.description()}, Doces`;
+            }
+        }
+
+        // Função para atualizar a exibição da descrição da árvore
+        function updateTreeDisplay(treeDescription) {
+            document.getElementById('tree-description-display').innerText = treeDescription;
+        }
+
+        // Adiciona event listeners aos botões
+        document.addEventListener('DOMContentLoaded', () => {
+            // Árvore Base
+            document.getElementById('btn-base-tree').addEventListener('click', () => {
+                const baseTree = new Tree();
+                updateTreeDisplay(baseTree.description());
+            });
+
+            // Árvore com Guirlanda
+            document.getElementById('btn-guirlanda').addEventListener('click', () => {
+                const treeWithGuirlanda = new Guirlanda(new Tree());
+                updateTreeDisplay(treeWithGuirlanda.description());
+            });
+
+            // Árvore com Bolas
+            document.getElementById('btn-bolas').addEventListener('click', () => {
+                const treeWithBolas = new Bolas(new Tree());
+                updateTreeDisplay(treeWithBolas.description());
+            });
+
+            // Árvore com Doces
+            document.getElementById('btn-doces').addEventListener('click', () => {
+                const treeWithDoces = new Doces(new Tree());
+                updateTreeDisplay(treeWithDoces.description());
+            });
+
+            // Árvore com Guirlanda e Bolas
+            document.getElementById('btn-guirlanda-bolas').addEventListener('click', () => {
+                const baseTree = new Tree();
+                const treeWithGuirlanda = new Guirlanda(baseTree);
+                const treeWithGuirlandaAndBolas = new Bolas(treeWithGuirlanda);
+                updateTreeDisplay(treeWithGuirlandaAndBolas.description());
+            });
+
+            // Árvore Completa (Guirlanda, Bolas e Doces)
+            document.getElementById('btn-all-decorated').addEventListener('click', () => {
+                const baseTree = new Tree();
+                const treeWithGuirlanda = new Guirlanda(baseTree);
+                const treeWithGuirlandaAndBolas = new Bolas(treeWithGuirlanda);
+                const treeFullyDecorated = new Doces(treeWithGuirlandaAndBolas);
+                updateTreeDisplay(treeFullyDecorated.description());
+            });
+        });
+    </script>
+</body>
+</html>
